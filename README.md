@@ -20,13 +20,6 @@ Please provide all yaml files and any additional files if required.
 
 To run the files in your local environment you need:
 
-
-###  Table of contents
-
-1. [Introduction](#tls-certificates)
-2. [Architecture based in MicroServices](#canary-flagger)
-
-
 ## Solution Exam
 
 ### Solution

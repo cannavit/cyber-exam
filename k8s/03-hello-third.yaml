@@ -2,25 +2,25 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: cyber-exam-cannavit
-  name: hello
+  name: hello-third
   labels:
-    app: hello
+    app: hello-third
     keel.sh/policy: force
     keel.sh/match-tag: "true"
     keel.sh/trigger: poll
   annotations:
     keel.sh/pollSchedule: "@every 10m"
 spec:
-  replicas: 3
+  replicas: 1
   template:
     metadata:
       namespace: cyber-exam-cannavit
-      name: hello
+      name: hello-third
       labels:
-        app: hello
+        app: hello-third
     spec:
       containers:
-        - name: hello
+        - name: hello-third
           image: vad1mo/hello-world-rest:latest
           imagePullPolicy: Always
           resources:
@@ -33,20 +33,20 @@ spec:
       restartPolicy: Always
   selector:
     matchLabels:
-      app: hello
+      app: hello-third
 ---
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: hello
+  name: hello-third
   namespace: cyber-exam-cannavit
 spec:
-  maxReplicas: 6
-  minReplicas: 3
+  maxReplicas: 2
+  minReplicas: 1
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment 
-    name: hello
+    name: hello-third
   targetCPUUtilizationPercentage: 70
 status:
   currentCPUUtilizationPercentage: 0
@@ -57,41 +57,15 @@ apiVersion: v1
 kind: Service
 metadata:
   namespace: cyber-exam-cannavit
-  name: hello
+  name: hello-third
   labels:
-    name: hello
-    run: hello
+    name: hello-third
+    run: hello-third
 spec:
   selector:
-    app: hello
+    app: hello-third
   ports:
     - protocol: TCP
       port: 5050
       targetPort: 5050
   type: ClusterIP
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: ingress-hello
-  namespace: cyber-exam-cannavit
-  annotations:
-    kubernetes.io/ingress.class: "nginx"         
-    cert-manager.io/cluster-issuer: "letsencrypt-hello"
-spec:
-  ingressClassName: nginx
-  rules:
-    - host: cyber-exam-cannavit.cloud.okteto.net
-      http:
-        paths:
-          - pathType: Prefix
-            backend:
-              service:
-                name: hello
-                port:
-                  number: 5050
-            path: /
-  tls:                       
-    - hosts:                  
-      - cloud.okteto.net
-      secretName: example-production-tls

@@ -19,6 +19,13 @@ module "eks" {
       additional_userdata           = "echo foo bar"
       additional_security_group_ids = [aws_security_group.worker_group_mgmt_one.id]
       asg_desired_capacity          = 2 # 15*3 45
+    },
+    {
+      name                          = "worker-group-2"
+      instance_type                 = "t3.medium"
+      additional_userdata           = "echo foo bar"
+      additional_security_group_ids = [aws_security_group.worker_group_mgmt_two.id]
+      asg_desired_capacity          = 1 # $29.95 x2
     }
   ]
 }

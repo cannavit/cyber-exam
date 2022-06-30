@@ -130,3 +130,5 @@ dmypy.json
 
 
 node_modules
+terraform/.terraform
+terraform/kubeconfig_cyber-cluster-M4efIXz0

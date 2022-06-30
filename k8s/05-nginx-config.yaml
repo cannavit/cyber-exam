@@ -1,0 +1,38 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-hello-first
+  namespace: cyber-exam-cannavit
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-hello"
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: cyber-exam.cannavit.dev
+      http:
+        paths:
+          - pathType: Prefix
+            backend:
+              service:
+                name: hello-first
+                port:
+                  number: 5050
+            path: /one
+          - pathType: Prefix
+            backend:
+              service:
+                name: hello-second
+                port:
+                  number: 5050
+            path: /two
+          - pathType: Prefix
+            backend:
+              service:
+                name: hello-third
+                port:
+                  number: 5050
+            path: /three
+  tls:                       
+    - hosts:                  
+      - cyber-exam.cannavit.dev
+      secretName: cyber-prod-tls
